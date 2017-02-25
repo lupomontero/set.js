@@ -7,8 +7,8 @@ const Set = require('..');
 
 
 //
-// Cada elemento del array `alumnas` es una array que representa a una alumna,
-// y cada elemento de este array anidado es un leguage que le gusta a la alumna.
+// Cada elemento del array `alumnas` es un array que representa a una alumna,
+// y cada elemento de este array anidado es un leguaje que le gusta a la alumna.
 //
 const alumnas = [
   ['JavaScript', 'HTML', 'CSS'],
@@ -24,7 +24,7 @@ const alumnas = [
 
 
 //
-// Creamos un objeto donde cada lenguaje sería una llave y su valor será un sets
+// Creamos un objeto donde cada lenguaje será una llave y su valor será un set
 // con referencias a las alumnas a las que les gusta ese leguaje.
 //
 const sets = alumnas.reduce((memo, alumna) => {
