@@ -1,0 +1,19 @@
+{
+  "name": "set.js",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "browserify example/main.js -o example/bundle.js -t [ babelify --presets [ es2015 ] ]",
+    "watch": "watchify example/main.js -o example/bundle.js -t [ babelify --presets [ es2015 ] ] -v",
+    "test": "mocha test/"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "babel-preset-es2015": "^6.22.0",
+    "babelify": "^7.3.0",
+    "browserify": "^14.1.0",
+    "d3": "^4.6.0",
+    "mocha": "^3.2.0",
+    "venn.js": "^0.2.14",
+    "watchify": "^3.9.0"
+  }
+}
