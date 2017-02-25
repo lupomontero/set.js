@@ -6,6 +6,10 @@ const Venn = require('venn.js');
 const Set = require('..');
 
 
+//
+// Cada elemento del array `alumnas` es una array que representa a una alumna,
+// y cada elemento de este array anidado es un leguage que le gusta a la alumna.
+//
 const alumnas = [
   ['JavaScript', 'HTML', 'CSS'],
   ['JavaScript', 'C'],
@@ -14,10 +18,15 @@ const alumnas = [
   ['JavaScript', 'CSS'],
   ['HTML', 'CSS'],
   ['JavaScript', 'HTML'],
+  ['JavaScript', 'HTML', 'CSS'],
   ['C']
 ];
 
 
+//
+// Creamos un objeto donde cada lenguaje sería una llave y su valor será un sets
+// con referencias a las alumnas a las que les gusta ese leguaje.
+//
 const sets = alumnas.reduce((memo, alumna) => {
 
   alumna.forEach(lang => {
@@ -31,10 +40,31 @@ const sets = alumnas.reduce((memo, alumna) => {
 }, {});
 
 
+//
+// Creamos array con las llaves de `sets`, que son los nombres de los lenguajes.
+// Esto nos permite iterar fácilmente nuestro objeto `sets`.
+//
 const langs = Object.keys(sets);
+
+
+//
+// Iteramos sobre los idiomas para construir chart data. La data será un array
+// de objetos donde cada objeto tiene una llave `sets`, que es un array con los
+// nombres de los sets en cuestión, y otra `size` con el tamaño del set en caso
+// de que `sets` sea sólo uno o el tamaño de la intersección si `sets` son más
+// de uno.
+//
+// Para cada idioma:
+//
+// 1. añadimos un elemento a data con la información del sets
+//
+// 2. calculamos la intersección del set en cuestión con todos los demás y
+//    añadimos un elemento a data para cada intersección.
+//
 const data = langs.reduce((memo, key) => {
 
   memo.push({sets: [key], size: sets[key].size()});
+
   // calcular intersección con todos los demás sets...
   langs.forEach(lang => {
 
@@ -49,8 +79,6 @@ const data = langs.reduce((memo, key) => {
   return memo;
 }, []);
 
-//console.log(data);
 
-const chart = Venn.VennDiagram();
-
-D3.select("#venn").datum(data).call(chart);
+// Finalmente dibujamos la gráfica.
+D3.select("#venn").datum(data).call(Venn.VennDiagram());

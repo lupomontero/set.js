@@ -5,8 +5,16 @@ var D3 = require('d3');
 var Venn = require('venn.js');
 var Set = require('..');
 
-var alumnas = [['JavaScript', 'HTML', 'CSS'], ['JavaScript', 'C'], ['JavaScript'], ['JavaScript', 'Ruby'], ['JavaScript', 'CSS'], ['HTML', 'CSS'], ['JavaScript', 'HTML'], ['C']];
+//
+// Cada elemento del array `alumnas` es una array que representa a una alumna,
+// y cada elemento de este array anidado es un leguage que le gusta a la alumna.
+//
+var alumnas = [['JavaScript', 'HTML', 'CSS'], ['JavaScript', 'C'], ['JavaScript'], ['JavaScript', 'Ruby'], ['JavaScript', 'CSS'], ['HTML', 'CSS'], ['JavaScript', 'HTML'], ['JavaScript', 'HTML', 'CSS'], ['C']];
 
+//
+// Creamos un objeto donde cada lenguaje sería una llave y su valor será un sets
+// con referencias a las alumnas a las que les gusta ese leguaje.
+//
 var sets = alumnas.reduce(function (memo, alumna) {
 
   alumna.forEach(function (lang) {
@@ -19,10 +27,30 @@ var sets = alumnas.reduce(function (memo, alumna) {
   return memo;
 }, {});
 
+//
+// Creamos array con las llaves de `sets`, que son los nombres de los lenguajes.
+// Esto nos permite iterar fácilmente nuestro objeto `sets`.
+//
 var langs = Object.keys(sets);
+
+//
+// Iteramos sobre los idiomas para construir chart data. La data será un array
+// de objetos donde cada objeto tiene una llave `sets`, que es un array con los
+// nombres de los sets en cuestión, y otra `size` con el tamaño del set en caso
+// de que `sets` sea sólo uno o el tamaño de la intersección si `sets` son más
+// de uno.
+//
+// Para cada idioma:
+//
+// 1. añadimos un elemento a data con la información del sets
+//
+// 2. calculamos la intersección del set en cuestión con todos los demás y
+//    añadimos un elemento a data para cada intersección.
+//
 var data = langs.reduce(function (memo, key) {
 
   memo.push({ sets: [key], size: sets[key].size() });
+
   // calcular intersección con todos los demás sets...
   langs.forEach(function (lang) {
 
@@ -37,11 +65,8 @@ var data = langs.reduce(function (memo, key) {
   return memo;
 }, []);
 
-//console.log(data);
-
-var chart = Venn.VennDiagram();
-
-D3.select("#venn").datum(data).call(chart);
+// Finalmente dibujamos la gráfica.
+D3.select("#venn").datum(data).call(Venn.VennDiagram());
 
 },{"..":2,"d3":10,"venn.js":11}],2:[function(require,module,exports){
 'use strict';
